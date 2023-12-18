@@ -1,9 +1,8 @@
-#define _CRT_SECURE_NO_WARNINGS 1
 #include "config.h"
 #include "UI.h"
 #include <windows.h> 
 #include <tchar.h>
-int kiki;
+
 void UI() {
 	SetConsoleTitle(_T("学生综合测试系统OVO"));
 	system("mode con: cols=100 lines=50");
