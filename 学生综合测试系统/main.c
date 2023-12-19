@@ -4,7 +4,7 @@
 int main() {
 	//UI();
 	Student* p=initialize_table();
-	Student* head = p;//¼ÇÂ¼ÏÂÍ·Ö¸Õë
+	Student* head = p;//ï¿½ï¿½Â¼ï¿½ï¿½Í·Ö¸ï¿½ï¿½
 	get_data(p);
 	while (1) {
 		printf("%s %s %s %s %s\n", p->stu_num, p->stu_name, p->stu_sex, p->stu_address, p->stu_phone_num);
