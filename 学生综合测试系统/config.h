@@ -10,7 +10,7 @@
 //定义学生基本信息的结构体
 //（typedef 可以给结构体用别名，后续调用可以省略struct）
 typedef struct Student {
-	int stu_num;//学号
+	char stu_num[15];//学号
 	char stu_name[20];//姓名
 	char stu_sex[10];//性别
 	char stu_address[30];//家庭住址
