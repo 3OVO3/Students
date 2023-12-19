@@ -1,11 +1,6 @@
 #ifndef __CONFIG_H__
 #define __CONFIG_H__
 #define _CRT_SECURE_NO_WARNINGS 1
-#include <stdio.h>
-#include <stdlib.h>
-#include "UI.h"
-#include "Student_data.h"
-#include <string.h>
 
 //定义学生基本信息的结构体
 //（typedef 可以给结构体用别名，后续调用可以省略struct）
@@ -34,5 +29,10 @@ typedef struct Course {
 	int rank_comprehensive;//综测名次
 }Course;
 
+#include <stdio.h>
+#include <stdlib.h>
+#include "UI.h"
+#include "Student_data.h"
+#include <string.h>
 
 #endif
