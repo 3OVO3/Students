@@ -2,7 +2,7 @@
 #include "UI.h"
 #include <windows.h> 
 #include <tchar.h>
-int flag = 0;//UI界面标志位
+int flag = 0;//UI界面的标志位
 
 void UI_main() {
 	system("cls");//清屏指令
