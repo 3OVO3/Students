@@ -2,5 +2,9 @@
 #define __STUDENT_DATA_H__
 void create_basic();
 
-#endif // !__STUDENT_DATA_H__
+void input(Student* stu);
+void get_data(Student* head);
+Student* initialize_table();
+#endif // !__STUDENT_DATAs_H__
+
 

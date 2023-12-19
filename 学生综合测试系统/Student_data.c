@@ -2,41 +2,96 @@
 #define table_capacity 50
 #define stu_path "Student.txt"
 
-Student* initialize_table() {//½¨Á¢Á´±í
-	static Student* head;//´æ·ÅÁ´±íµÄÍ·½Úµã
-	Student* local = (Student*)malloc(sizeof(Student));//localÎªÁ´±íµÄÖĞ¼ä½Úµã£¬´ËĞĞÉú³ÉµÄÖ¸ÕëÎªÁ´±íµÄÍ·½Úµã
+
+Student* initialize_table() {//å»ºç«‹é“¾è¡¨
+	static Student* head;//å­˜æ”¾é“¾è¡¨çš„å¤´èŠ‚ç‚¹
+	Student* local = (Student*)malloc(sizeof(Student));//localä¸ºé“¾è¡¨çš„ä¸­é—´èŠ‚ç‚¹ï¼Œæ­¤è¡Œç”Ÿæˆçš„æŒ‡é’ˆä¸ºé“¾è¡¨çš„å¤´èŠ‚ç‚¹
 	head = local;
 	for (int i = 0; i < table_capacity - 1; i++) {
-		local->next = (Student*)malloc(sizeof(Student));//½¨Á¢ÖĞ¼ä½Úµã£¬²¢°ÑËûÃÇ¶¼Á¬ÆğÀ´£¬ĞÎ³ÉÁ´±í
+		local->next = (Student*)malloc(sizeof(Student));//å»ºç«‹ä¸­é—´èŠ‚ç‚¹ï¼Œå¹¶æŠŠä»–ä»¬éƒ½è¿èµ·æ¥ï¼Œå½¢æˆé“¾è¡¨
 		local = local->next;
 	}
-	local->next = head;//ÈÃÁ´±íµÄÎ²½ÚµãÓëÍ·½ÚµãÁ¬½ÓÆğÀ´£¬ĞÎ³ÉÑ­»·Á´±í
-	return head;//·µ»ØÁ´±íµÄÍ·½Úµã
+	local->next = head;//è®©é“¾è¡¨çš„å°¾èŠ‚ç‚¹ä¸å¤´èŠ‚ç‚¹è¿æ¥èµ·æ¥ï¼Œå½¢æˆå¾ªç¯é“¾è¡¨
+	return head;//è¿”å›é“¾è¡¨çš„å¤´èŠ‚ç‚¹
 }
+
 
 
 
 void input(Student* stu) {
-	printf("ÇëÊäÈëÑ§ÉúµÄÑ§ºÅ£º");
+	printf("è¯·è¾“å…¥å­¦ç”Ÿçš„å­¦å·ï¼š");
 	scanf("%s", stu->stu_num);
 
-	printf("ÇëÊäÈëÑ§ÉúµÄĞÕÃû£º");
+	printf("è¯·è¾“å…¥å­¦ç”Ÿçš„å§“åï¼š");
 	scanf("%s", stu->stu_name);
 
-	printf("ÇëÊäÈëÑ§ÉúµÄĞÔ±ğ£º");
+	printf("è¯·è¾“å…¥å­¦ç”Ÿçš„æ€§åˆ«ï¼š");
 	scanf("%s", stu->stu_sex);
 
-	printf("ÇëÊäÈëÑ§ÉúµÄ¼ÒÍ¥×¡Ö·£º");
+	printf("è¯·è¾“å…¥å­¦ç”Ÿçš„å®¶åº­ä½å€ï¼š");
 	scanf("%s", stu->stu_address);
 
 
-	printf("ÇëÊäÈëÑ§ÉúµÄÁªÏµµç»°£º");
+	printf("è¯·è¾“å…¥å­¦ç”Ÿçš„è”ç³»ç”µè¯ï¼š");
 	scanf("%s", stu->stu_phone_num);
 
 }
 
+void get_data(Student*head) {
+	FILE* p_ini = fopen("basic.csv", "r");//è¯»æ–¹å¼æ‰“å¼€æ–‡ä»¶
+	Student* p = head;//è®°å½•ä¸‹å¤´æŒ‡é’ˆ
+	
+	int cell=0;//æ‰€åœ¨çš„åˆ—
+	char temp[5][30] = {NULL};//è¯»å–çš„æ ¼å­å†…å®¹
+	for (;;) {//ä¸æ–­åœ°éå†æ¯ä¸€è¡Œ
+		static char point[2] = { "\0" };//å½“å‰æŒ‡å‘çš„å­—ç¬¦
+		cell = 0;//å°†æ‰€åœ¨çš„åˆ—ç½®ä¸º0
+		for (;;) {//éå†ä¸€è¡Œçš„æ•°æ®å­˜å…¥tempä¸­
+			point[0] = fgetc(p_ini);//è¯»å–ä¸€ä¸ªå­—ç¬¦
+			if (point[0] == -1) {//æ–‡ä»¶ç»“æŸ
+				break;//è·³å‡º
+			}
+			else if (point[0] == ',') {//é‡åˆ°åˆ—åˆ†éš”ç¬¦
+				cell++;//tempå®šä½ä¸‹æ ‡+1
+			}
+			else if (point[0] == '\n') {//é‡åˆ°æ¢è¡Œç¬¦
+				break;//è·³å‡ºï¼Œç»“ç®—æœ¬è¡Œå†…å®¹
+			}
+			else {//è¯»å–åˆ°æ­£å¸¸æ–‡æœ¬å†…å®¹
+				strcat(temp[cell], point);//è£…åˆ°ç›¸åº”çš„ç½å­é‡Œ
+			}
+		}
+
+		
+		//å°†tempçš„å€¼èµ‹åˆ°é“¾è¡¨ä¸­
+		strcpy(head->stu_num, temp[0]);
+		strcpy(head->stu_name, temp[1]);
+		strcpy(head->stu_sex, temp[2]);
+		strcpy(head->stu_address, temp[3]);
+		strcpy(head->stu_phone_num, temp[4]);
+		
+		
+
+		//æ¸…ç©ºtempå€¼
+		for (int i = 0; i < 5; i++) {
+			strcpy(temp[i], "");
+		}
+
+		//åˆ¤æ–­æ–‡ä»¶æ˜¯å¦ç»“æŸ
+		if (point[0] = fgetc(p_ini) == -1) {
+			break;
+		}
+		else {
+			//é“¾è¡¨å‘å‰
+			head = head->next;
+		}
+			
+	}
+	head->next=p;//å°†headå†ç½®ä¸ºé“¾è¡¨å¤´ç»“ç‚¹
+}
 
 
+//å†™å­¦ç”Ÿä¿¡æ¯çš„å‡½æ•°
 void create_basic() {
 	FILE* p_ini = fopen("basic.csv", "r");
 	if (p_ini == 0) {
@@ -44,20 +99,24 @@ void create_basic() {
 	}
 	else {
 		fclose(p_ini);
-		fopen("basic.csv", "a");
+		p_ini=fopen("basic.csv", "a");
 	}
+
 	Student *new=(Student*)malloc(sizeof(Student));
 	input(new);
-	setbuf(stdin, NULL);//Ê¹stdinÊäÈëÁ÷ÓÉÄ¬ÈÏ»º³åÇø×ªÎªÎŞ»º³åÇø,´ïµ½Çå³ı»º´æÇøµÄÄ¿µÄ£»
+	setbuf(stdin, NULL);//ä½¿stdinè¾“å…¥æµç”±é»˜è®¤ç¼“å†²åŒºè½¬ä¸ºæ— ç¼“å†²åŒº,è¾¾åˆ°æ¸…é™¤ç¼“å­˜åŒºçš„ç›®çš„ï¼›
 	fputs(strcat(new->stu_num, ","), p_ini);
+
 	fputs(strcat(new->stu_name, ","), p_ini);
 	fputs(strcat(new->stu_sex, ","), p_ini);
 	fputs(strcat(new->stu_address, ","), p_ini);
 	fputs(strcat(new->stu_phone_num, "\n"), p_ini);
 	fclose(p_ini);
 }
-
-
+ 
+void csv_to_link() {
+	FILE* f = fopen("basic.csv", "r");
+}
 
 
 
@@ -65,9 +124,9 @@ void create_basic() {
 
 //
 //void innitialize(){
-//	Student* p = initialize_table;//p±íÊ¾³õÊ¼»¯ÍêÁ´±íµÄÍ·Ö¸Õë
-//	FILE* f;//²Ù×İÎÄ¼şµÄ±äÁ¿
-//	f = fopen("Student.txt", "w");//¶ÁÈ¡ÎÄ¼ş£¬²»´æÔÚÔò´´½¨ĞÂµÄÎÄ¼ş
+//	Student* p = initialize_table;//pè¡¨ç¤ºåˆå§‹åŒ–å®Œé“¾è¡¨çš„å¤´æŒ‡é’ˆ
+//	FILE* f;//æ“çºµæ–‡ä»¶çš„å˜é‡
+//	f = fopen("Student.txt", "w");//è¯»å–æ–‡ä»¶ï¼Œä¸å­˜åœ¨åˆ™åˆ›å»ºæ–°çš„æ–‡ä»¶
 //	for (int i = 0; i < table_capacity; i++) {
 //		while (fgetc(f) != ",") {
 //
@@ -76,9 +135,9 @@ void create_basic() {
 //	}
 //}
 //
-////¶ÔÎÄ¼ş½øĞĞ³õÊ¼»¯
+////å¯¹æ–‡ä»¶è¿›è¡Œåˆå§‹åŒ–
 //FILE* initialize_fire() {
-//	FILE* p = fdopen(stu_path, "w");//p±äÁ¿ÓÃÓÚ²Ù¿ØÎÄ¼ş
+//	FILE* p = fdopen(stu_path, "w");//på˜é‡ç”¨äºæ“æ§æ–‡ä»¶
 //
 //
 //}
@@ -97,8 +156,6 @@ void create_basic() {
 //
 //
 //
-
-
 
 
 
