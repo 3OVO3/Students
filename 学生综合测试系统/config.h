@@ -31,8 +31,8 @@ typedef struct Course {
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <windows.h> 
 #include "UI.h"
 #include "Student_data.h"
-#include <string.h>
-
 #endif

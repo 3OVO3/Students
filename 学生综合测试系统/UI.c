@@ -1,6 +1,5 @@
 #include "config.h"
 #include "UI.h"
-#include <windows.h> 
 #include <tchar.h>
 int flag = 0;//UI界面的标志位
 
@@ -199,6 +198,13 @@ void UI_grade() {
 		}
 		break;
 	}
+}
+
+//设置控制台的位置
+void gotoxy(short x, short y) {
+	COORD coord = { x, y };//COORD是Windows API中定义的一种结构体类型，表示控制台屏幕上的坐标。以形参x和y进行初始化。
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);//设置控制台光标位置
+	//GetStdHandle(STD_OUTPUT_HANDLE); 获取控制台输出句柄
 }
 
 void UI() {
