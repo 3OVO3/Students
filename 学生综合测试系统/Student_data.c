@@ -175,13 +175,12 @@ Student* sort_link_table(Student* head) {
 		p = head;
 		p_later = p->next;
 	}
-	head = p_later;
 	return head;//返回头节点
 }
 
 //根据已有链表对csv文件进行更新
  void renew_data(Student*head) {
-	 //sort_link_table(head);
+	 sort_link_table(head);
 	 FILE* p_ini = fopen("basic.csv", "w");
 	 Student* local = head;
 	 for (;;) {
