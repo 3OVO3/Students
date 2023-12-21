@@ -1,11 +1,12 @@
 #ifndef __STUDENT_DATA_H__
 #define __STUDENT_DATA_H__
-void create_basic();
-void input(Student* stu);
-void get_data(Student* head);
 Student* initialize_table();
-Student* sort_data(Student* head);
+void create_basic();
+void get_data(Student* head);
+Student* sort_link_table(Student* head);
 void browse();
+void alter_basic();
+void renew_data(Student* head);
 #endif // !__STUDENT_DATAs_H__
 
 

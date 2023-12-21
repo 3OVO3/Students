@@ -29,6 +29,7 @@ typedef struct Course {
 	int rank_comprehensive;//×Û²âÃû´Î
 }Course;
 
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
