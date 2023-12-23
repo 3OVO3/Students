@@ -2,7 +2,7 @@
 #define stu_path "Student.txt"
 
 
-//´´½¨¡ª¡ªĞ´Ñ§ÉúĞÅÏ¢µÄº¯Êı
+//åˆ›å»ºâ€”â€”å†™å­¦ç”Ÿä¿¡æ¯çš„å‡½æ•°
 void create_basic() {
 	FILE* p_ini = fopen("basic.csv", "r");
 	if (p_ini == 0) {
@@ -15,23 +15,23 @@ void create_basic() {
 
 	Student *new=(Student*)malloc(sizeof(Student));
 
-	printf("ÇëÊäÈëÑ§ÉúµÄÑ§ºÅ£º");
+	printf("è¯·è¾“å…¥å­¦ç”Ÿçš„å­¦å·ï¼š");
 	scanf("%s",new->stu_num);
 
-	printf("ÇëÊäÈëÑ§ÉúµÄĞÕÃû£º");
+	printf("è¯·è¾“å…¥å­¦ç”Ÿçš„å§“åï¼š");
 	scanf("%s",new->stu_name);
 
-	printf("ÇëÊäÈëÑ§ÉúµÄĞÔ±ğ£º");
+	printf("è¯·è¾“å…¥å­¦ç”Ÿçš„æ€§åˆ«ï¼š");
 	scanf("%s",new->stu_sex);
 
-	printf("ÇëÊäÈëÑ§ÉúµÄ¼ÒÍ¥×¡Ö·£º");
+	printf("è¯·è¾“å…¥å­¦ç”Ÿçš„å®¶åº­ä½å€ï¼š");
 	scanf("%s",new->stu_address);
 
 
-	printf("ÇëÊäÈëÑ§ÉúµÄÁªÏµµç»°£º");
+	printf("è¯·è¾“å…¥å­¦ç”Ÿçš„è”ç³»ç”µè¯ï¼š");
 	scanf("%s",new->stu_phone_num);
 
-	setbuf(stdin, NULL);//Ê¹stdinÊäÈëÁ÷ÓÉÄ¬ÈÏ»º³åÇø×ªÎªÎŞ»º³åÇø,´ïµ½Çå³ı»º´æÇøµÄÄ¿µÄ
+	setbuf(stdin, NULL);//ä½¿stdinè¾“å…¥æµç”±é»˜è®¤ç¼“å†²åŒºè½¬ä¸ºæ— ç¼“å†²åŒº,è¾¾åˆ°æ¸…é™¤ç¼“å­˜åŒºçš„ç›®çš„
 	fputs(strcat(new->stu_num, ","), p_ini);
 	fputs(strcat(new->stu_name, ","), p_ini);
 	fputs(strcat(new->stu_sex, ","), p_ini);
@@ -41,40 +41,56 @@ void create_basic() {
 	Student* head;
 	head=initialize_table();
 	renew_data(head);
-	printf("´´½¨³É¹¦£¡");
+	printf("åˆ›å»ºæˆåŠŸï¼é”®å…¥1ç»§ç»­æ·»åŠ (ä»»æ„é”®é€€å‡º)ï¼š");
+	if (_getch() == '1') {
+		printf("\n\n");
+		create_basic();
+	}	
 }
 
-//ĞŞ¸Ä¡ª¡ªĞŞ¸ÄÑ§ÉúĞÅÏ¢Ä£¿é
+//ä¿®æ”¹â€”â€”ä¿®æ”¹å­¦ç”Ÿä¿¡æ¯æ¨¡å—
 void alter_basic() {
-	Student* head = initialize_table();//»ñÈ¡Á´±í
-	Student* local = head;//¼ÇÂ¼ÏÂÍ·ÎÄ¼ş£¬ÓÃlocal½øĞĞ²Ù×İ
-	FILE* p_ini = fopen("basic.csv", "r");//´ò¿ªÎÄ¼ş
-	char num[15];//ÓÃ»§ÊäÈëµÄÑ§ºÅ
-	printf("ÇëÊäÈë¸ÃÑ§ÉúµÄÑ§ºÅ£º");
-	//Èç¹û²»ÖªµÀÑ§ºÅ£¬¿ÉÍ¨¹ıĞÕÃû²éÑ¯Ñ§ºÅ
-	scanf("%s", &num);//¶ÁÈëÑ§ºÅ
-	getchar();//Çå³ı»º´æÇø
-	for (;;) {//¾­¹ı´ËÑ­»·£¬¶¨Î»µ½Ñ§ÉúÎ»ÖÃ
+	Student* head = initialize_table();//è·å–é“¾è¡¨
+	Student* local = head;//è®°å½•ä¸‹å¤´æ–‡ä»¶ï¼Œç”¨localè¿›è¡Œæ“çºµ
+	char num[15];//ç”¨æˆ·è¾“å…¥çš„å­¦å·
+	printf("è¯·è¾“å…¥è¯¥å­¦ç”Ÿçš„å­¦å·ï¼š");
+	//å¦‚æœä¸çŸ¥é“å­¦å·ï¼Œå¯é€šè¿‡å§“åæŸ¥è¯¢å­¦å·
+	scanf("%s", &num);//è¯»å…¥å­¦å·
+	getchar();//æ¸…é™¤ç¼“å­˜åŒº
+	for (;;) {//ç»è¿‡æ­¤å¾ªç¯ï¼Œå®šä½åˆ°å­¦ç”Ÿä½ç½®
 		//printf("%s\n", local->stu_num);
-		if (strcmp(local->stu_num, num))//Èç¹ûÏàµÈÎª0£¬Ìø³ö¡£²»ÏàµÈÔò½Ó×Å±éÀúÏÂÒ»¸ö
-			local = local->next;//ÍùÏÂ×ß
+		if (strcmp(local->stu_num, num))//å¦‚æœç›¸ç­‰ä¸º0ï¼Œè·³å‡ºã€‚ä¸ç›¸ç­‰åˆ™æ¥ç€éå†ä¸‹ä¸€ä¸ª
+			local = local->next;//å¾€ä¸‹èµ°
 		else
 			break;
-		if (local == head) {//ÕÒ²»µ½
-			printf("ÕÒ²»µ½¸ÃÑ§Éú£¡ÇëÄúÖØĞÂ´´½¨¸ÃÑ§Éú£¡\n");
-			create_basic();//´´½¨Ñ§Éúº¯Êı
-			getchar();
-			return;//ÍË³ö
+		if (local == head) {//æ‰¾ä¸åˆ°
+			printf("æ‰¾ä¸åˆ°è¯¥å­¦ç”Ÿï¼è¯·æ‚¨é‡æ–°åˆ›å»ºè¯¥å­¦ç”Ÿï¼\n");
+			create_basic();//åˆ›å»ºå­¦ç”Ÿå‡½æ•°
+			return;//é€€å‡º
 		}
 	}
-	char choice;//Ñ¡Ïî
-	char temp[30];//ÊäÈëµÄÒªĞŞ¸ÄÖµ
-	printf("Çë¼üÈëÑ¡Ïî½øĞĞĞŞ¸Ä£¨a/Ñ§ºÅ b/ĞÕÃû c/ĞÔ±ğ d/×¡Ö· e/ÁªÏµµç»° n/ÍË³öĞŞ¸Ä£©£º");
+	char choice;//é€‰é¡¹
+	char temp[30];//è¾“å…¥çš„è¦ä¿®æ”¹å€¼
+	
 	for (;;) {
-		scanf("%c", &choice);
-		if (choice == 'n')
+		printf("è¯·é”®å…¥é€‰é¡¹è¿›è¡Œä¿®æ”¹ï¼ˆa/å­¦å· b/å§“å c/æ€§åˆ« d/ä½å€ e/è”ç³»ç”µè¯ n/é€€å‡ºä¿®æ”¹ï¼‰ï¼š");
+		scanf("%s", &choice);
+		while (getchar() != '\n');//æ¸…é™¤æ‰€æœ‰ç¼“å­˜åŒº
+		char choices[6] = "abcden";
+		int bool=0;
+		for (int i = 0; i < 6; i++) {
+			if (choice == choices[i])
+				bool = 1;
+		}
+		if (bool == 0) {
+			printf("æ‚¨è¾“å…¥çš„é€‰é¡¹æœ‰è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥ï¼\n");
+			continue;
+		}
+		
+		if (choice == 'n')//né€‰é¡¹é€€å‡º
 			break;
-		printf("ÇëÊäÈëĞŞ¸ÄºóµÄÖµ");
+
+		printf("è¯·è¾“å…¥ä¿®æ”¹åçš„å€¼");
 		scanf("%s", temp);
 		getchar();
 		switch (choice)
@@ -95,94 +111,116 @@ void alter_basic() {
 			strcpy(local->stu_phone_num, temp);
 			break;
 		default:
-			printf("ÇëÖØĞÂÊäÈëÑ¡ÏîÅ¶");
-			continue;
+			break;
 		}
-		renew_data(head);//ÖØĞÂĞ´ÈëÎÄ¼ş
-		printf("ĞŞ¸Ä³É¹¦£¡ÄúÊÇ·ñ»¹ĞèÒª¼ÌĞøĞŞ¸Ä£¿£¨1¼ÌĞø£¬ÈÎÒâ¼üÍË³ö£©");
+	
+		
+		renew_data(head);//é‡æ–°å†™å…¥æ–‡ä»¶
+
+		printf("ä¿®æ”¹æˆåŠŸï¼æ‚¨æ˜¯å¦è¿˜éœ€è¦ç»§ç»­ä¿®æ”¹ï¼Ÿï¼ˆ1ç»§ç»­ï¼Œä»»æ„é”®é€€å‡ºï¼‰");
 		scanf("%c", &choice);
 		getchar();
 		if (choice != '1')
 			break;
 		else
-			printf("Çë¼üÈëÑ¡Ïî½øĞĞĞŞ¸Ä£¨a/Ñ§ºÅ b/ĞÕÃû c/ĞÔ±ğ d/×¡Ö· e/ÁªÏµµç»° n/ÍË³öĞŞ¸Ä£©£º");
+			printf("è¯·é”®å…¥é€‰é¡¹è¿›è¡Œä¿®æ”¹ï¼ˆa/å­¦å· b/å§“å c/æ€§åˆ« d/ä½å€ e/è”ç³»ç”µè¯ n/é€€å‡ºä¿®æ”¹ï¼‰ï¼š");
 	}
 	
-	fclose(p_ini);//¹Ø±ÕÎÄ¼ş
 }
  
-//É¾³ı¡ª¡ªÉ¾³ıÑ§ÉúĞÅÏ¢Ä£¿é
+//åˆ é™¤â€”â€”åˆ é™¤å­¦ç”Ÿä¿¡æ¯æ¨¡å—
 void delete_basic() {
-	Student* head = initialize_table();//»ñÈ¡Á´±í
+	Student* head = initialize_table();//è·å–é“¾è¡¨
+	Student* local = head;//è®°å½•ä¸‹å¤´æ–‡ä»¶ï¼Œç”¨localè¿›è¡Œæ“çºµ
+	char num[15];//ç”¨æˆ·è¾“å…¥çš„å­¦å·
+	printf("æ¬¢è¿æ¥åˆ°è‡ªåŠ©åˆ é™¤ç³»ç»Ÿï¼è‡ªåŠ©åˆ é™¤ï¼Œä¸Šä¸å°é¡¶ï¼Œé”®å…¥né€€å‡ºã€‚\n");
 
-	Student* local = head;//¼ÇÂ¼ÏÂÍ·ÎÄ¼ş£¬ÓÃlocal½øĞĞ²Ù×İ
-	FILE* p_ini = fopen("basic.csv", "r");//´ò¿ªÎÄ¼ş
-	char num[15];//ÓÃ»§ÊäÈëµÄÑ§ºÅ
-	printf("ÇëÊäÈë¸ÃÑ§ÉúµÄÑ§ºÅ£º");
-	for (;;) {//¾­¹ı´ËÑ­»·£¬¶¨Î»µ½Ñ§ÉúÎ»ÖÃ
-		if (num == 'n')//nÑ¡ÏîÍË³ö
+	for (;;) {//ä¸€æ¬¡åˆ é™¤å­¦ç”Ÿæ•°æ®çš„è¿‡ç¨‹
+		printf("å­¦ç”Ÿå­¦å·ï¼š");
+		scanf("%s", &num);//è¯»å…¥å­¦å·
+		getchar();//æ¸…é™¤ç¼“å­˜åŒº
+		static int jump;//ç”¨äºè·³å‡ºå¤–å¾ªç¯
+		jump = 0;
+		if (num == 'n')//né€‰é¡¹é€€å‡º
 			break;
-		scanf("%s", &num);//¶ÁÈëÑ§ºÅ
-		getchar();//Çå³ı»º´æÇø
-		if (strcmp(local->stu_num, num))//Èç¹ûÏàµÈÎª0£¬Ìø³ö¡£²»ÏàµÈÔò½Ó×Å±éÀúÏÂÒ»¸ö
-			local = local->next;//ÍùÏÂ×ß
-		else
-			break;
-		if (local == head) {//ÕÒ²»µ½
-			printf("ÕÒ²»µ½¸ÃÑ§Éú£¡ÇëÖØĞÂÊäÈëÑ§ºÅ£º£¨nÍË³ö£©\n");
+		for (;;) {//æ­¤å¾ªç¯ç”¨äºæ‰¾åˆ°å­¦ç”Ÿä½ç½®çš„å‰ä¸€ä¸ª
+			if (strcmp(local->next->stu_num, num))//å¦‚æœç›¸ç­‰ä¸º0ï¼Œè·³å‡ºã€‚ä¸ç›¸ç­‰åˆ™æ¥ç€éå†ä¸‹ä¸€ä¸ª
+				local = local->next;//å¾€ä¸‹èµ°
+			else {
+				jump = 1;
+				break;
+			}
+				
+			if (local == head) {//æ‰¾ä¸åˆ°
+				break;
+			}
+		}
+		if (jump = 0) {//æ²¡æ‰¾åˆ°
+			printf("æ‰¾ä¸åˆ°è¯¥å­¦ç”Ÿï¼è¯·é‡æ–°è¾“å…¥\n");
 			continue;
 		}
-	}
+			
+		//åˆ é™¤é“¾è¡¨ä¸­çš„è¯¥é¡¹æ•°æ®;
+		if (local->next == local)
+			strcpy(local->stu_num, "");
+		else
+			local->next = local->next->next;
+	
 
-	fclose(p_ini);//¹Ø±ÕÎÄ¼ş£¨ÓĞÊ¼ÓĞÖÕ£©
+		//ç”¨é“¾è¡¨æ›´æ–°æ–‡ä»¶
+		renew_data(local);//æ­¤æ—¶headå·²ç»ä¸ä¸€å®šåœ¨åˆ é™¤åçš„é“¾è¡¨ä¸­äº†
+		printf("åˆ é™¤æˆåŠŸï¼\n\n");
+	}
 }
 
-//»ñÈ¡Á´±í¡ª¡ª´Ëº¯ÊıÓÃÓÚ»ñÈ¡µ±Ç°ÎÄ¼şÄÚµÄÊı¾İ²¢·ÅÈëÒ»¸öĞÂ¶¨ÒåµÄÁ´±íÖĞ£¬½øĞĞÅÅĞò²¢·µ»Ø¸ÃÁ´±íµÄÍ·Ö¸Õë
+//è·å–é“¾è¡¨â€”â€”æ­¤å‡½æ•°ç”¨äºè·å–å½“å‰æ–‡ä»¶å†…çš„æ•°æ®å¹¶æ”¾å…¥ä¸€ä¸ªæ–°å®šä¹‰çš„é“¾è¡¨ä¸­ï¼Œè¿›è¡Œæ’åºå¹¶è¿”å›è¯¥é“¾è¡¨çš„å¤´æŒ‡é’ˆ
 Student* initialize_table() {
-	static Student* old = NULL;//³õÊ¼»¯Ò»¸öoldÖ¸Õë£¬ÓÃÓÚ¼ÇÂ¼µ±Ç°Á´±íÖ¸Õë£¬µ«ËüµÄ³õÖµÎª¿Õ
-	free(old);//ÊÍ·Å£¬È·±£ÄÚ´æ¿Õ¼ä²»»áÀË·Ñ
-	//»ñÈ¡Á´±í³¤¶È
-	int table_capacity = 0;//´ú±íÁ´±í³¤¶È
-	FILE* f = fopen("basic.csv", "r");//´ò¿ªÎÄ¼ş
-	char temp_c;//ÁÙÊ±±äÁ¿£¬ÓÃÓÚÅĞ¶ÏĞĞÊı
+	static Student* old = NULL;//åˆå§‹åŒ–ä¸€ä¸ªoldæŒ‡é’ˆï¼Œç”¨äºè®°å½•å½“å‰é“¾è¡¨æŒ‡é’ˆï¼Œä½†å®ƒçš„åˆå€¼ä¸ºç©º
+	free(old);//é‡Šæ”¾ï¼Œç¡®ä¿å†…å­˜ç©ºé—´ä¸ä¼šæµªè´¹
+	//è·å–é“¾è¡¨é•¿åº¦
+	int table_capacity = 0;//ä»£è¡¨é“¾è¡¨é•¿åº¦
+	FILE* f = fopen("basic.csv", "r");//æ‰“å¼€æ–‡ä»¶
+	char temp_c;//ä¸´æ—¶å˜é‡ï¼Œç”¨äºåˆ¤æ–­è¡Œæ•°
 	for (;;) {
-		temp_c = fgetc(f);//¶ÁÈ¡ÎÄ¼şÄÚÏÂÒ»¸ö×Ö·û
+		temp_c = fgetc(f);//è¯»å–æ–‡ä»¶å†…ä¸‹ä¸€ä¸ªå­—ç¬¦
 		if (temp_c == '\n') {
-			table_capacity++;//£»Á´±íµÄ³¤¶È+1
+			table_capacity++;//ï¼›é“¾è¡¨çš„é•¿åº¦+1
 		}
-		else if (temp_c == -1) {//ÎÄ¼ş½áÊø
+		else if (temp_c == -1) {//æ–‡ä»¶ç»“æŸ
 			fclose(f);
 			break;
 		}
 	}
-	//½¨Á¢Ñ­»·Á´±í
-	Student* head;//´æ·ÅÁ´±íµÄÍ·½Úµã
-	Student* local = (Student*)malloc(sizeof(Student));//localÎªÁ´±íµÄÖĞ¼ä½Úµã£¬´ËĞĞÉú³ÉµÄÖ¸ÕëÎªÁ´±íµÄÍ·½Úµã
+	//å»ºç«‹å¾ªç¯é“¾è¡¨
+	Student* head;//å­˜æ”¾é“¾è¡¨çš„å¤´èŠ‚ç‚¹
+	Student* local = (Student*)malloc(sizeof(Student));//localä¸ºé“¾è¡¨çš„ä¸­é—´èŠ‚ç‚¹ï¼Œæ­¤è¡Œç”Ÿæˆçš„æŒ‡é’ˆä¸ºé“¾è¡¨çš„å¤´èŠ‚ç‚¹
 	head = local;
 	for (int i = 0; i < table_capacity - 1; i++) {
-		local->next = (Student*)malloc(sizeof(Student));//½¨Á¢ÖĞ¼ä½Úµã£¬²¢°ÑËûÃÇ¶¼Á¬ÆğÀ´£¬ĞÎ³ÉÁ´±í
+		local->next = (Student*)malloc(sizeof(Student));//å»ºç«‹ä¸­é—´èŠ‚ç‚¹ï¼Œå¹¶æŠŠä»–ä»¬éƒ½è¿èµ·æ¥ï¼Œå½¢æˆé“¾è¡¨
 		local = local->next;
 	}
-	local->next = head;//ÈÃÁ´±íµÄÎ²½ÚµãÓëÍ·½ÚµãÁ¬½ÓÆğÀ´£¬ĞÎ³ÉÑ­»·Á´±í
+	local->next = head;//è®©é“¾è¡¨çš„å°¾èŠ‚ç‚¹ä¸å¤´èŠ‚ç‚¹è¿æ¥èµ·æ¥ï¼Œå½¢æˆå¾ªç¯é“¾è¡¨
 
-	get_data(head);//°ÑÄ¿Ç°ÎÄ¼şÀïµÄÊı¾İ¶ÁÈëÁ´±íÖĞ
-	old = head;//¼ÇÂ¼ÏÂµ±Ç°µÄÁ´±íÍ·½áµã£¬ÏÂ´ÎÆôÓÃ¸Ãº¯ÊıÊ±ÊÍ·Å¸Ã½Úµã
-	head = sort_link_table(head);
-	return head;//·µ»ØÁ´±íµÄÍ·½Úµã
+	get_data(head);//æŠŠç›®å‰æ–‡ä»¶é‡Œçš„æ•°æ®è¯»å…¥é“¾è¡¨ä¸­
+	old = head;//è®°å½•ä¸‹å½“å‰çš„é“¾è¡¨å¤´ç»“ç‚¹ï¼Œä¸‹æ¬¡å¯ç”¨è¯¥å‡½æ•°æ—¶é‡Šæ”¾è¯¥èŠ‚ç‚¹
+	head = sort_link_table(head);//æ’åº
+	return head;//è¿”å›é“¾è¡¨çš„å¤´èŠ‚ç‚¹
 }
 
-//¸üĞÂÎÄ¼ş¡ª¡ª¸ù¾İÒÑÓĞÁ´±í¶ÔcsvÎÄ¼ş½øĞĞ¸üĞÂ
+//æ›´æ–°æ–‡ä»¶â€”â€”æ ¹æ®å·²æœ‰é“¾è¡¨å¯¹csvæ–‡ä»¶è¿›è¡Œæ›´æ–°
 void renew_data(Student* head) {
 	head = sort_link_table(head);
 	FILE* p_ini = fopen("basic.csv", "w");
 	Student* local = head;
 	for (;;) {
-		fputs(strcat(local->stu_num, ","), p_ini);
-		fputs(strcat(local->stu_name, ","), p_ini);
-		fputs(strcat(local->stu_sex, ","), p_ini);
-		fputs(strcat(local->stu_address, ","), p_ini);
-		fputs(strcat(local->stu_phone_num, "\n"), p_ini);
-		local = local->next;
+		if (local->stu_num != "") {
+			fputs(strcat(local->stu_num, ","), p_ini);
+			fputs(strcat(local->stu_name, ","), p_ini);
+			fputs(strcat(local->stu_sex, ","), p_ini);
+			fputs(strcat(local->stu_address, ","), p_ini);
+			fputs(strcat(local->stu_phone_num, "\n"), p_ini);
+			local = local->next;
+		}
 		if (local == head)
 			break;
 	}
@@ -190,83 +228,83 @@ void renew_data(Student* head) {
 }
 
 
-//ÅÅĞò¡ª¡ª¶ÔÎÄ¼şÄÚÈİ°´ÕÕÑ§ºÅ´ÓĞ¡µ½´óÅÅĞò£©£¨²»Ö±½Óµ÷ÓÃ£©
+//æ’åºâ€”â€”å¯¹æ–‡ä»¶å†…å®¹æŒ‰ç…§å­¦å·ä»å°åˆ°å¤§æ’åºï¼‰ï¼ˆä¸ç›´æ¥è°ƒç”¨ï¼‰
 Student* sort_link_table(Student* head) {
-	Student* p = head;//pÎªµ±Ç°½Úµã
-	Student* p_later = p->next;//µ±Ç°½ÚµãµÄÏÂÒ»¸ö½Úµã
-	Student* p_front = p;//µ±Ç°½ÚµãµÄÉÏÒ»¸ö½Úµã
-	Student* temp;//tempÖĞ¼ä±äÁ¿£¬ÓÃÓÚ½»»»Ö¸Õë
-	Student* tail = p;//´æ·ÅÎ²½Úµã
-	int count = 0;//ÓÃÓÚ´æ·Å½ÚµãÊı
+	Student* p = head;//pä¸ºå½“å‰èŠ‚ç‚¹
+	Student* p_later = p->next;//å½“å‰èŠ‚ç‚¹çš„ä¸‹ä¸€ä¸ªèŠ‚ç‚¹
+	Student* p_front = p;//å½“å‰èŠ‚ç‚¹çš„ä¸Šä¸€ä¸ªèŠ‚ç‚¹
+	Student* temp;//tempä¸­é—´å˜é‡ï¼Œç”¨äºäº¤æ¢æŒ‡é’ˆ
+	Student* tail = p;//å­˜æ”¾å°¾èŠ‚ç‚¹
+	int count = 0;//ç”¨äºå­˜æ”¾èŠ‚ç‚¹æ•°
 	do {
 		count++;
 		p = p->next;
-	} while (p != head); //²é¿´Á´±íÀïÓĞ¼¸¸ö½Úµã
+	} while (p != head); //æŸ¥çœ‹é“¾è¡¨é‡Œæœ‰å‡ ä¸ªèŠ‚ç‚¹
 
-	for (int i = 0; i < count - 1; i++) {//Íâ²ãÑ­»·µÄ´ÎÊıÎª×Ü½ÚµãÊı-1
+	for (int i = 0; i < count - 1; i++) {//å¤–å±‚å¾ªç¯çš„æ¬¡æ•°ä¸ºæ€»èŠ‚ç‚¹æ•°-1
 		while(p->next != head){
-			if (strcmp(p->stu_num, p_later->stu_num) > 0) {//Èôµ±Ç°½ÚµãµÄÑ§ºÅ´óÓÚÏÂÒ»¸ö½ÚµãµÄÑ§ºÅÊ±
-				if (p == head) {//µ±Ç°½ÚµãÎªÍ·½ÚµãÊ±
+			if (strcmp(p->stu_num, p_later->stu_num) > 0) {//è‹¥å½“å‰èŠ‚ç‚¹çš„å­¦å·å¤§äºä¸‹ä¸€ä¸ªèŠ‚ç‚¹çš„å­¦å·æ—¶
+				if (p == head) {//å½“å‰èŠ‚ç‚¹ä¸ºå¤´èŠ‚ç‚¹æ—¶
 
-					while (tail->next != head) {//Ñ°ÕÒÎ²½Úµã
+					while (tail->next != head) {//å¯»æ‰¾å°¾èŠ‚ç‚¹
 						tail = tail->next;
 					}
 
 					p->next = p_later->next;
-					p_later->next = p;//´ËÊ±p_laterÎªÍ·½Úµã
-					head = p_later;//¸üĞÂÍ·½Úµã
-					tail->next = head;//ÈÃÎ²½ÚµãÖ¸ÏòĞÂµÄÍ·½Úµã
+					p_later->next = p;//æ­¤æ—¶p_laterä¸ºå¤´èŠ‚ç‚¹
+					head = p_later;//æ›´æ–°å¤´èŠ‚ç‚¹
+					tail->next = head;//è®©å°¾èŠ‚ç‚¹æŒ‡å‘æ–°çš„å¤´èŠ‚ç‚¹
 				}
-				else {//µ±Ç°½ÚµãÎªÖĞ¼ä½ÚµãÊ±
+				else {//å½“å‰èŠ‚ç‚¹ä¸ºä¸­é—´èŠ‚ç‚¹æ—¶
 					p->next = p_later->next;
 					p_later->next = p;
 					p_front->next = p_later;
 				}
-		/*´ËÊ±p_laterÔÚheadµÄÇ°Ãæ£¬ÏÂÃæ°ÑpºÍp_laterÎ»ÖÃ»¥»»£¬±£Ö¤pÔÚp_laterÇ°Ãæ£¬·½±ãºóÃæÅĞ¶Ï*/
+		/*æ­¤æ—¶p_lateråœ¨headçš„å‰é¢ï¼Œä¸‹é¢æŠŠpå’Œp_laterä½ç½®äº’æ¢ï¼Œä¿è¯påœ¨p_laterå‰é¢ï¼Œæ–¹ä¾¿åé¢åˆ¤æ–­*/
 				temp = p_later;
 				p_later = p;
 				p = temp;
 			}
-			p_front = p;//ÈÃp_frontÊ¼ÖÕÔÚpµÄÇ°Ãæ
+			p_front = p;//è®©p_frontå§‹ç»ˆåœ¨pçš„å‰é¢
 			p = p->next;
 			p_later = p_later->next;
 		}
-		/*Íâ²ãÑ­»·½áÊø£¬ÈÃpÖØĞÂ»Øµ½Í·½Úµã£¬p_later»Øµ½pµÄÏÂÒ»¸ö½Úµã*/
+		/*å¤–å±‚å¾ªç¯ç»“æŸï¼Œè®©pé‡æ–°å›åˆ°å¤´èŠ‚ç‚¹ï¼Œp_laterå›åˆ°pçš„ä¸‹ä¸€ä¸ªèŠ‚ç‚¹*/
 		p = head;
 		p_later = p->next;
 	}
-	return head;//·µ»ØÍ·½Úµã
+	return head;//è¿”å›å¤´èŠ‚ç‚¹
 }
 
 
-//½«csvÎÄ¼şÖĞ¶Áµ½µÄÑ§ÉúÊı¾İĞ´Èë³õÊ¼»¯ºÃµÄÖ¸ÕëÁ´±í£¨²»Ö±½Óµ÷ÓÃ£©
+//å°†csvæ–‡ä»¶ä¸­è¯»åˆ°çš„å­¦ç”Ÿæ•°æ®å†™å…¥åˆå§‹åŒ–å¥½çš„æŒ‡é’ˆé“¾è¡¨ï¼ˆä¸ç›´æ¥è°ƒç”¨ï¼‰
 void get_data(Student* head) {
-	FILE* p_ini = fopen("basic.csv", "r");//¶Á·½Ê½´ò¿ªÎÄ¼ş
-	Student* p = head;//¼ÇÂ¼ÏÂÍ·Ö¸Õë
-	int cell = 0;//ËùÔÚµÄÁĞ
-	char temp[5][30] = { NULL };//¶ÁÈ¡µÄ¸ñ×ÓÄÚÈİ
-	for (;;) {//²»¶ÏµØ±éÀúÃ¿Ò»ĞĞ
-		static char point[2] = { "\0" };//µ±Ç°Ö¸ÏòµÄ×Ö·û
-		cell = 0;//½«ËùÔÚµÄÁĞÖÃÎª0
-		for (;;) {//±éÀúÒ»ĞĞµÄÊı¾İ´æÈëtempÖĞ
-			point[0] = fgetc(p_ini);//¶ÁÈ¡Ò»¸ö×Ö·û
-			if (point[0] == -1) {//ÎÄ¼ş½áÊø
-				break;//Ìø³ö
+	FILE* p_ini = fopen("basic.csv", "r");//è¯»æ–¹å¼æ‰“å¼€æ–‡ä»¶
+	Student* p = head;//è®°å½•ä¸‹å¤´æŒ‡é’ˆ
+	int cell = 0;//æ‰€åœ¨çš„åˆ—
+	char temp[5][30] = { NULL };//è¯»å–çš„æ ¼å­å†…å®¹
+	for (;;) {//ä¸æ–­åœ°éå†æ¯ä¸€è¡Œ
+		static char point[2] = { "\0" };//å½“å‰æŒ‡å‘çš„å­—ç¬¦
+		cell = 0;//å°†æ‰€åœ¨çš„åˆ—ç½®ä¸º0
+		for (;;) {//éå†ä¸€è¡Œçš„æ•°æ®å­˜å…¥tempä¸­
+			point[0] = fgetc(p_ini);//è¯»å–ä¸€ä¸ªå­—ç¬¦
+			if (point[0] == -1) {//æ–‡ä»¶ç»“æŸ
+				break;//è·³å‡º
 			}
-			else if (point[0] == ',') {//Óöµ½ÁĞ·Ö¸ô·û
-				cell++;//temp¶¨Î»ÏÂ±ê+1
+			else if (point[0] == ',') {//é‡åˆ°åˆ—åˆ†éš”ç¬¦
+				cell++;//tempå®šä½ä¸‹æ ‡+1
 			}
-			else if (point[0] == '\n') {//Óöµ½»»ĞĞ·û
+			else if (point[0] == '\n') {//é‡åˆ°æ¢è¡Œç¬¦
 
-				break;//Ìø³ö£¬½áËã±¾ĞĞÄÚÈİ
+				break;//è·³å‡ºï¼Œç»“ç®—æœ¬è¡Œå†…å®¹
 			}
-			else {//¶ÁÈ¡µ½Õı³£ÎÄ±¾ÄÚÈİ
-				strcat(temp[cell], point);//×°µ½ÏàÓ¦µÄ¹Ş×ÓÀï
+			else {//è¯»å–åˆ°æ­£å¸¸æ–‡æœ¬å†…å®¹
+				strcat(temp[cell], point);//è£…åˆ°ç›¸åº”çš„ç½å­é‡Œ
 			}
 		}
 
 
-		//½«tempµÄÖµ¸³µ½Á´±íÖĞ
+		//å°†tempçš„å€¼èµ‹åˆ°é“¾è¡¨ä¸­
 		strcpy(p->stu_num, temp[0]);
 		strcpy(p->stu_name, temp[1]);
 		strcpy(p->stu_sex, temp[2]);
@@ -275,18 +313,18 @@ void get_data(Student* head) {
 
 
 
-		//Çå¿ÕtempÖµ
+		//æ¸…ç©ºtempå€¼
 		for (int i = 0; i < 5; i++) {
 			strcpy(temp[i], "");
 		}
 
-		//ÅĞ¶ÏÎÄ¼şÊÇ·ñ½áÊø
+		//åˆ¤æ–­æ–‡ä»¶æ˜¯å¦ç»“æŸ
 		if (point[0] = fgetc(p_ini) == -1) {
 			break;
 		}
 		else {
 			fseek(p_ini, -1, SEEK_CUR);
-			//Á´±íÏòÇ°
+			//é“¾è¡¨å‘å‰
 			p = p->next;
 		}
 
@@ -294,108 +332,108 @@ void get_data(Student* head) {
 }
 
 
-//¶ÔÎÄ¼ş½øĞĞ³õÊ¼»¯
+//å¯¹æ–‡ä»¶è¿›è¡Œåˆå§‹åŒ–
 //void initialize_fire() {
-//	FILE* p = fdopen("basic_²âÊÔ.csv", "w");//p±äÁ¿ÓÃÓÚ²Ù¿ØÎÄ¼ş
+//	FILE* p = fdopen("basic_æµ‹è¯•.csv", "w");//på˜é‡ç”¨äºæ“æ§æ–‡ä»¶
 //
 //
 //}
 
 
-//ä¯ÀÀÑ§ÉúĞÅÏ¢
+//æµè§ˆå­¦ç”Ÿä¿¡æ¯
 void browse_data() {
 	Student* head = initialize_table();
-	Student* local = head;//±£´æÍ·½Úµã
-	int col_width = 0;//ÁĞ¿í
-	for (int i = 1;; i++) {//¿ØÖÆÏÔÊ¾¼¸ĞĞ£¬¾ßÌåĞĞÊıÓÉÁ´±íµÄ½ÚµãÊıÀ´¿ØÖÆ
-		for (int j = 1; j < 6; j++) {//ÏÔÊ¾5ÁĞ
+	Student* local = head;//ä¿å­˜å¤´èŠ‚ç‚¹
+	int col_width = 0;//åˆ—å®½
+	for (int i = 1;; i++) {//æ§åˆ¶æ˜¾ç¤ºå‡ è¡Œï¼Œå…·ä½“è¡Œæ•°ç”±é“¾è¡¨çš„èŠ‚ç‚¹æ•°æ¥æ§åˆ¶
+		for (int j = 1; j < 6; j++) {//æ˜¾ç¤º5åˆ—
 
-			//ÏÔÊ¾Ñ§ºÅºÍĞÕÃû
+			//æ˜¾ç¤ºå­¦å·å’Œå§“å
 			if (j < 3) {
-				while (col_width < 14) {//Ç°Á½ÁĞµÄÁĞ¿í
-					if (i == 1) {//µÚÒ»ĞĞÏÈÊä³öÊôĞÔÃû Ñ§ºÅ ĞÕÃû
+				while (col_width < 14) {//å‰ä¸¤åˆ—çš„åˆ—å®½
+					if (i == 1) {//ç¬¬ä¸€è¡Œå…ˆè¾“å‡ºå±æ€§å å­¦å· å§“å
 						printf(" ");
 						col_width++;
-						if (col_width == 5 && j == 1) {//¾ÓÖĞÏÔÊ¾
-							col_width += printf("Ñ§ºÅ");
+						if (col_width == 5 && j == 1) {//å±…ä¸­æ˜¾ç¤º
+							col_width += printf("å­¦å·");
 						}
-						else if (col_width == 5 && j == 2) {//¾ÓÖĞÏÔÊ¾
-							col_width += printf("ĞÕÃû");
+						else if (col_width == 5 && j == 2) {//å±…ä¸­æ˜¾ç¤º
+							col_width += printf("å§“å");
 						}
 					}
 					else {
-						if (j == 1) {//ÏÔÊ¾Ñ§ºÅÊı¾İ
-							col_width += printf("%14s", local->stu_num);//Êä³ö×îĞ¡¿í¶ÈÎª14
+						if (j == 1) {//æ˜¾ç¤ºå­¦å·æ•°æ®
+							col_width += printf("%14s", local->stu_num);//è¾“å‡ºæœ€å°å®½åº¦ä¸º14
 						}
-						else {//ÏÔÊ¾ĞÕÃûÊı¾İ
-							col_width += printf("%14s", local->stu_name);//Êä³ö×îĞ¡¿í¶ÈÎª14
+						else {//æ˜¾ç¤ºå§“åæ•°æ®
+							col_width += printf("%14s", local->stu_name);//è¾“å‡ºæœ€å°å®½åº¦ä¸º14
 						}
 					}
 				}
-				col_width = 0;//ÁĞ¿íÇåÁã
-				printf("|");//×÷ÎªÁĞÖ®¼äµÄ·Ö¸ô
+				col_width = 0;//åˆ—å®½æ¸…é›¶
+				printf("|");//ä½œä¸ºåˆ—ä¹‹é—´çš„åˆ†éš”
 			}
 
-			//ÏÔÊ¾ĞÔ±ğ
+			//æ˜¾ç¤ºæ€§åˆ«
 			else if (j == 3) {
 				while (col_width < 9) {
-					if (i == 1) {//µÚÒ»ĞĞÏÈÊä³öÊôĞÔÃû ĞÔ±ğ
+					if (i == 1) {//ç¬¬ä¸€è¡Œå…ˆè¾“å‡ºå±æ€§å æ€§åˆ«
 						printf(" ");
 						col_width++;
-						if (col_width == 3) {//¾ÓÖĞÏÔÊ¾
-							col_width += printf("ĞÔ±ğ");
+						if (col_width == 3) {//å±…ä¸­æ˜¾ç¤º
+							col_width += printf("æ€§åˆ«");
 						}
 					}
 					else {
-						col_width += printf("%9s", local->stu_sex);//Êä³ö×îĞ¡¿í¶ÈÎª9
+						col_width += printf("%9s", local->stu_sex);//è¾“å‡ºæœ€å°å®½åº¦ä¸º9
 					}
 					
 					
 				}
-				col_width = 0;//ÁĞ¿íÇå0
-				printf("|");//×÷ÎªÁĞÖ®¼äµÄ·Ö¸ô
+				col_width = 0;//åˆ—å®½æ¸…0
+				printf("|");//ä½œä¸ºåˆ—ä¹‹é—´çš„åˆ†éš”
 			}
 
-			//ÏÔÊ¾ÁªÏµµç»°
+			//æ˜¾ç¤ºè”ç³»ç”µè¯
 			else if (j == 4) {
 				while (col_width < 12) {
-					if (i == 1) {//µÚÒ»ĞĞÏÈÊä³öÊôĞÔÃû ÁªÏµµç»°
+					if (i == 1) {//ç¬¬ä¸€è¡Œå…ˆè¾“å‡ºå±æ€§å è”ç³»ç”µè¯
 						printf(" ");
 						col_width++;
-						if (col_width == 2) {//¾ÓÖĞÏÔÊ¾
-							col_width += printf("ÁªÏµµç»°");
+						if (col_width == 2) {//å±…ä¸­æ˜¾ç¤º
+							col_width += printf("è”ç³»ç”µè¯");
 						}
 					}
 					else {
-						col_width += printf("%12s", local->stu_phone_num);//Êä³ö×îĞ¡¿í¶ÈÎª12
+						col_width += printf("%12s", local->stu_phone_num);//è¾“å‡ºæœ€å°å®½åº¦ä¸º12
 					}
 				}
 				col_width = 0;
-				printf("|");//×÷ÎªÁĞÖ®¼äµÄ·Ö¸ô
+				printf("|");//ä½œä¸ºåˆ—ä¹‹é—´çš„åˆ†éš”
 			}
 
-			//ÏÔÊ¾¼ÒÍ¥µØÖ·
+			//æ˜¾ç¤ºå®¶åº­åœ°å€
 			else {
 				while (col_width < 47) {
-					if (i == 1) {//µÚÒ»ĞĞÏÈÊä³öÊôĞÔÃû ¼ÒÍ¥µØÖ·
+					if (i == 1) {//ç¬¬ä¸€è¡Œå…ˆè¾“å‡ºå±æ€§å å®¶åº­åœ°å€
 						printf(" ");
 						col_width++;
-						if (col_width == 20) {//¾ÓÖĞÏÔÊ¾
-							col_width += printf("¼ÒÍ¥µØÖ·");
+						if (col_width == 20) {//å±…ä¸­æ˜¾ç¤º
+							col_width += printf("å®¶åº­åœ°å€");
 						}
 					}
 					else {
-						col_width += printf("%s", local->stu_address);//Êä³ö×îĞ¡¿í¶ÈÎª48
+						col_width += printf("%s", local->stu_address);//è¾“å‡ºæœ€å°å®½åº¦ä¸º48
 						break;
 					}
 				}
-				col_width = 0;//×÷ÎªÁĞÖ®¼äµÄ·Ö¸ô
+				col_width = 0;//ä½œä¸ºåˆ—ä¹‹é—´çš„åˆ†éš”
 			}
 		}
 		printf("\n");
-		//Êä³öÒ»ĞĞ "-" £¬ÓÃÀ´×÷ÎªĞĞÖ®¼äµÄ·Ö¸ô
+		//è¾“å‡ºä¸€è¡Œ "-" ï¼Œç”¨æ¥ä½œä¸ºè¡Œä¹‹é—´çš„åˆ†éš”
 		while (col_width < 100) {
-			//Ã¿´Îµ½µÚÒ»ĞĞÁĞ¿í£¨|£©µÄÎ»ÖÃºó£¬¸ÄÎªÊä³öÒ»¸ö "+"
+			//æ¯æ¬¡åˆ°ç¬¬ä¸€è¡Œåˆ—å®½ï¼ˆ|ï¼‰çš„ä½ç½®åï¼Œæ”¹ä¸ºè¾“å‡ºä¸€ä¸ª "+"
 			if (col_width == 14 || col_width == 29 || col_width == 39 || col_width == 52) {
 				printf("+");
 			}
@@ -404,7 +442,7 @@ void browse_data() {
 			}
 			col_width++;
 		}
-		col_width = 0;//ÁĞ¿íÇåÁã
+		col_width = 0;//åˆ—å®½æ¸…é›¶
 		printf("\n");
 		if (i > 1) {
 			local = local->next;
