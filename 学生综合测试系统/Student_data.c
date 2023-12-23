@@ -67,8 +67,6 @@ void alter_basic() {
 			return;//退出
 		}
 	}
-
-
 	char choice;//选项
 	char temp[30];//输入的要修改值
 	printf("请键入选项进行修改（a/学号 b/姓名 c/性别 d/住址 e/联系电话 n/退出修改）：");
@@ -116,6 +114,7 @@ void alter_basic() {
 //删除——删除学生信息模块
 void delete_basic() {
 	Student* head = initialize_table();//获取链表
+
 	Student* local = head;//记录下头文件，用local进行操纵
 	FILE* p_ini = fopen("basic.csv", "r");//打开文件
 	char num[15];//用户输入的学号
@@ -189,26 +188,6 @@ void renew_data(Student* head) {
 	}
 	fclose(p_ini);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 //排序——对文件内容按照学号从小到大排序）（不直接调用）
@@ -323,38 +302,120 @@ void get_data(Student* head) {
 //}
 
 
-
-
 //浏览学生信息
-// 睡前思路：
-// 通过操控光标的位置，比如先在控制台的第二行画一行的 "-"
-// 然后返回到上一行，输出文件第一行的内容(除了逗号以外的)，除了地址外其他属性（列）的宽度固定
-// （需要把地址放在最后一列）
-// 重复以上操作
-//void browse() {
-//	char s;//存放从文件中获取的字符
-//	FILE* p = fopen("basic.csv", "r");
-//	if (p == 0) {
-//		printf("未写入学生信息！请先写入！");
-//	}
-//
-//	for (int i = 0; s = fgetc(p) != -1; i++) {
-//		if (s == ',') {
-//			printf("%c", '|');
-//		}
-//		else if (s == '\n') {
-//			printf("%c", '\n');
-//			for (int i = 0; i < 101; i++) {
-//				printf("%c", '-');
-//			}
-//			
-//		}
-//		else {
-//			printf("%c", s);
-//		}
-//		
-//	}
-//}
+void browse_data() {
+	Student* head = initialize_table();
+	Student* local = head;//保存头节点
+	int col_width = 0;//列宽
+	for (int i = 1;; i++) {//控制显示几行，具体行数由链表的节点数来控制
+		for (int j = 1; j < 6; j++) {//显示5列
+
+			//显示学号和姓名
+			if (j < 3) {
+				while (col_width < 14) {//前两列的列宽
+					if (i == 1) {//第一行先输出属性名 学号 姓名
+						printf(" ");
+						col_width++;
+						if (col_width == 5 && j == 1) {//居中显示
+							col_width += printf("学号");
+						}
+						else if (col_width == 5 && j == 2) {//居中显示
+							col_width += printf("姓名");
+						}
+					}
+					else {
+						if (j == 1) {//显示学号数据
+							col_width += printf("%14s", local->stu_num);//输出最小宽度为14
+						}
+						else {//显示姓名数据
+							col_width += printf("%14s", local->stu_name);//输出最小宽度为14
+						}
+					}
+				}
+				col_width = 0;//列宽清零
+				printf("|");//作为列之间的分隔
+			}
+
+			//显示性别
+			else if (j == 3) {
+				while (col_width < 9) {
+					if (i == 1) {//第一行先输出属性名 性别
+						printf(" ");
+						col_width++;
+						if (col_width == 3) {//居中显示
+							col_width += printf("性别");
+						}
+					}
+					else {
+						col_width += printf("%9s", local->stu_sex);//输出最小宽度为9
+					}
+					
+					
+				}
+				col_width = 0;//列宽清0
+				printf("|");//作为列之间的分隔
+			}
+
+			//显示联系电话
+			else if (j == 4) {
+				while (col_width < 12) {
+					if (i == 1) {//第一行先输出属性名 联系电话
+						printf(" ");
+						col_width++;
+						if (col_width == 2) {//居中显示
+							col_width += printf("联系电话");
+						}
+					}
+					else {
+						col_width += printf("%12s", local->stu_phone_num);//输出最小宽度为12
+					}
+				}
+				col_width = 0;
+				printf("|");//作为列之间的分隔
+			}
+
+			//显示家庭地址
+			else {
+				while (col_width < 47) {
+					if (i == 1) {//第一行先输出属性名 家庭地址
+						printf(" ");
+						col_width++;
+						if (col_width == 20) {//居中显示
+							col_width += printf("家庭地址");
+						}
+					}
+					else {
+						col_width += printf("%s", local->stu_address);//输出最小宽度为48
+						break;
+					}
+				}
+				col_width = 0;//作为列之间的分隔
+			}
+		}
+		printf("\n");
+		//输出一行 "-" ，用来作为行之间的分隔
+		while (col_width < 100) {
+			//每次到第一行列宽（|）的位置后，改为输出一个 "+"
+			if (col_width == 14 || col_width == 29 || col_width == 39 || col_width == 52) {
+				printf("+");
+			}
+			else {
+				printf("-");
+			}
+			col_width++;
+		}
+		col_width = 0;//列宽清零
+		printf("\n");
+		if (i > 1) {
+			local = local->next;
+		}
+		if (local == head && i > 1) {
+			break;
+		}
+	}
+	system("pause");
+}
+
 
 
 
