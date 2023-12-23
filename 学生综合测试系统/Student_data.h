@@ -8,6 +8,7 @@ void browse_data();
 void alter_basic();
 void renew_data(Student* head);
 void delete_basic();
+int browe_center(int col_width, int len);
 #endif // !__STUDENT_DATAs_H__
 
 
