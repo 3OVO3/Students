@@ -1,95 +1,8 @@
 #include "config.h"
 #define stu_path "Student.txt"
 
-//此函数用于获取当前文件内的数据并放入一个新定义的链表中，返回该链表的头指针
-Student* initialize_table() {
-	static Student* old=NULL;//初始化一个old指针，用于记录当前链表指针，但它的初值为空
-	free(old);//释放，确保内存空间不会浪费
-	//获取链表长度
-	int table_capacity=0;//代表链表长度
-	FILE* f = fopen("basic.csv", "r");//打开文件
-	char temp_c;//临时变量，用于判断行数
-	for (;;) {
-		temp_c = fgetc(f);//读取文件内下一个字符
-		if (temp_c == '\n') {
-			table_capacity++;//；链表的长度+1
-		}
-		else if (temp_c == -1) {//文件结束
-			fclose(f);
-			break;
-		}		
-	}
-	//建立循环链表
-	Student* head;//存放链表的头节点
-	Student* local = (Student*)malloc(sizeof(Student));//local为链表的中间节点，此行生成的指针为链表的头节点
-	head = local;
-	for (int i = 0; i < table_capacity - 1; i++) {
-		local->next = (Student*)malloc(sizeof(Student));//建立中间节点，并把他们都连起来，形成链表
-		local = local->next;
-	}
-	local->next = head;//让链表的尾节点与头节点连接起来，形成循环链表
 
-	get_data(head);//把目前文件里的数据读入链表中
-	old = head;//记录下当前的链表头结点，下次启用该函数时释放该节点
-	return head;//返回链表的头节点
-}
-
-//将csv文件中读到的学生数据写入初始化好的指针链表
-void get_data(Student* head) {
-	FILE* p_ini = fopen("basic.csv", "r");//读方式打开文件
-	Student* p = head;//记录下头指针
-	int cell = 0;//所在的列
-	char temp[5][30] = { NULL };//读取的格子内容
-	for (;;) {//不断地遍历每一行
-		static char point[2] = { "\0" };//当前指向的字符
-		cell = 0;//将所在的列置为0
-		for (;;) {//遍历一行的数据存入temp中
-			point[0] = fgetc(p_ini);//读取一个字符
-			if (point[0] == -1) {//文件结束
-				break;//跳出
-			}
-			else if (point[0] == ',') {//遇到列分隔符
-				cell++;//temp定位下标+1
-			}
-			else if (point[0] == '\n') {//遇到换行符
-				
-				break;//跳出，结算本行内容
-			}
-			else {//读取到正常文本内容
-				strcat(temp[cell], point);//装到相应的罐子里
-			}
-		}
-
-
-		//将temp的值赋到链表中
-		strcpy(p->stu_num, temp[0]);
-		strcpy(p->stu_name, temp[1]);
-		strcpy(p->stu_sex, temp[2]);
-		strcpy(p->stu_address, temp[3]);
-		strcpy(p->stu_phone_num, temp[4]);
-
-
-
-		//清空temp值
-		for (int i = 0; i < 5; i++) {
-			strcpy(temp[i], "");
-		}
-
-		//判断文件是否结束
-		if (point[0] = fgetc(p_ini) == -1) {
-			break;
-		}
-		else {
-			fseek(p_ini, -1, SEEK_CUR);
-			//链表向前
-			p = p->next;
-		}
-
-	}
-}
-
-
-//写学生信息的函数
+//创建——写学生信息的函数
 void create_basic() {
 	FILE* p_ini = fopen("basic.csv", "r");
 	if (p_ini == 0) {
@@ -128,9 +41,177 @@ void create_basic() {
 	Student* head;
 	head=initialize_table();
 	renew_data(head);
+	printf("创建成功！");
+}
+
+//修改——修改学生信息模块
+void alter_basic() {
+	Student* head = initialize_table();//获取链表
+	Student* local = head;//记录下头文件，用local进行操纵
+	FILE* p_ini = fopen("basic.csv", "r");//打开文件
+	char num[15];//用户输入的学号
+	printf("请输入该学生的学号：");
+	//如果不知道学号，可通过姓名查询学号
+	scanf("%s", &num);//读入学号
+	getchar();//清除缓存区
+	for (;;) {//经过此循环，定位到学生位置
+		//printf("%s\n", local->stu_num);
+		if (strcmp(local->stu_num, num))//如果相等为0，跳出。不相等则接着遍历下一个
+			local = local->next;//往下走
+		else
+			break;
+		if (local == head) {//找不到
+			printf("找不到该学生！请您重新创建该学生！\n");
+			create_basic();//创建学生函数
+			getchar();
+			return;//退出
+		}
+	}
+
+
+	char choice;//选项
+	char temp[30];//输入的要修改值
+	printf("请键入选项进行修改（a/学号 b/姓名 c/性别 d/住址 e/联系电话 n/退出修改）：");
+	for (;;) {
+		scanf("%c", &choice);
+		if (choice == 'n')
+			break;
+		printf("请输入修改后的值");
+		scanf("%s", temp);
+		getchar();
+		switch (choice)
+		{
+		case 'a':
+			strcpy(local->stu_num, temp);
+			break;
+		case 'b':
+			strcpy(local->stu_name, temp);
+			break;
+		case 'c':
+			strcpy(local->stu_sex, temp);
+			break;
+		case 'd':
+			strcpy(local->stu_address, temp);
+			break;
+		case 'e':
+			strcpy(local->stu_phone_num, temp);
+			break;
+		default:
+			printf("请重新输入选项哦");
+			continue;
+		}
+		renew_data(head);//重新写入文件
+		printf("修改成功！您是否还需要继续修改？（1继续，任意键退出）");
+		scanf("%c", &choice);
+		getchar();
+		if (choice != '1')
+			break;
+		else
+			printf("请键入选项进行修改（a/学号 b/姓名 c/性别 d/住址 e/联系电话 n/退出修改）：");
+	}
+	
+	fclose(p_ini);//关闭文件
 }
  
-//对文件内容按照学号从小到大排序
+//删除——删除学生信息模块
+void delete_basic() {
+	Student* head = initialize_table();//获取链表
+	Student* local = head;//记录下头文件，用local进行操纵
+	FILE* p_ini = fopen("basic.csv", "r");//打开文件
+	char num[15];//用户输入的学号
+	printf("请输入该学生的学号：");
+	for (;;) {//经过此循环，定位到学生位置
+		if (num == 'n')//n选项退出
+			break;
+		scanf("%s", &num);//读入学号
+		getchar();//清除缓存区
+		if (strcmp(local->stu_num, num))//如果相等为0，跳出。不相等则接着遍历下一个
+			local = local->next;//往下走
+		else
+			break;
+		if (local == head) {//找不到
+			printf("找不到该学生！请重新输入学号：（n退出）\n");
+			continue;
+		}
+	}
+
+	fclose(p_ini);//关闭文件（有始有终）
+}
+
+//获取链表——此函数用于获取当前文件内的数据并放入一个新定义的链表中，进行排序并返回该链表的头指针
+Student* initialize_table() {
+	static Student* old = NULL;//初始化一个old指针，用于记录当前链表指针，但它的初值为空
+	free(old);//释放，确保内存空间不会浪费
+	//获取链表长度
+	int table_capacity = 0;//代表链表长度
+	FILE* f = fopen("basic.csv", "r");//打开文件
+	char temp_c;//临时变量，用于判断行数
+	for (;;) {
+		temp_c = fgetc(f);//读取文件内下一个字符
+		if (temp_c == '\n') {
+			table_capacity++;//；链表的长度+1
+		}
+		else if (temp_c == -1) {//文件结束
+			fclose(f);
+			break;
+		}
+	}
+	//建立循环链表
+	Student* head;//存放链表的头节点
+	Student* local = (Student*)malloc(sizeof(Student));//local为链表的中间节点，此行生成的指针为链表的头节点
+	head = local;
+	for (int i = 0; i < table_capacity - 1; i++) {
+		local->next = (Student*)malloc(sizeof(Student));//建立中间节点，并把他们都连起来，形成链表
+		local = local->next;
+	}
+	local->next = head;//让链表的尾节点与头节点连接起来，形成循环链表
+
+	get_data(head);//把目前文件里的数据读入链表中
+	old = head;//记录下当前的链表头结点，下次启用该函数时释放该节点
+	head = sort_link_table(head);
+	return head;//返回链表的头节点
+}
+
+//更新文件——根据已有链表对csv文件进行更新
+void renew_data(Student* head) {
+	head = sort_link_table(head);
+	FILE* p_ini = fopen("basic.csv", "w");
+	Student* local = head;
+	for (;;) {
+		fputs(strcat(local->stu_num, ","), p_ini);
+		fputs(strcat(local->stu_name, ","), p_ini);
+		fputs(strcat(local->stu_sex, ","), p_ini);
+		fputs(strcat(local->stu_address, ","), p_ini);
+		fputs(strcat(local->stu_phone_num, "\n"), p_ini);
+		local = local->next;
+		if (local == head)
+			break;
+	}
+	fclose(p_ini);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//排序——对文件内容按照学号从小到大排序）（不直接调用）
 Student* sort_link_table(Student* head) {
 	Student* p = head;//p为当前节点
 	Student* p_later = p->next;//当前节点的下一个节点
@@ -178,83 +259,59 @@ Student* sort_link_table(Student* head) {
 	return head;//返回头节点
 }
 
-//根据已有链表对csv文件进行更新
- void renew_data(Student*head) {
-	 sort_link_table(head);
-	 FILE* p_ini = fopen("basic.csv", "w");
-	 Student* local = head;
-	 for (;;) {
-		 fputs(strcat(local->stu_num, ","), p_ini);
-		 fputs(strcat(local->stu_name, ","), p_ini);
-		 fputs(strcat(local->stu_sex, ","), p_ini);
-		 fputs(strcat(local->stu_address, ","), p_ini);
-		 fputs(strcat(local->stu_phone_num, "\n"), p_ini);
-		 local = local->next;
-		 if (local == head)
-			 break;
-	 }
-	 fclose(p_ini);
-}
 
- //修改学生信息模块
-void alter_basic() {
-	Student* head = initialize_table();
-	Student* local = head;
-	FILE* p_ini = fopen("basic.csv", "r");
-	char num[15];
-	printf("请输入该学生的学号：");
-	//如果不知道学号，可通过姓名查询学号
-	scanf("%s", &num);
-	for (;;) {//经过此循环，定位到学生位置
-		if (!strcmp(local->stu_num, num))
-			local = local->next;
-		else
-			break;
-		if (local->next == head) {
-			create_basic();
-			return;
-		}
-	}
-	char choice;//选项
-	char temp[30];//输入的要修改值
-	printf("请键入选项进行修改（a/学号 b/姓名 c/性别 d/住址 e/联系电话 n/退出修改）：");
-	for (;;) {
-		scanf("%c", &choice);
-		if (choice == 'n')
-			break;
-		switch (choice)
-		{
-			printf("请输入修改后的值");
-			scanf("%s", temp);
-		case 'a':
-			strcpy(local->stu_num, temp);
-			break;
-		case 'b':
-			strcpy(local->stu_name, temp);
-			break;
-		case 'c':
-			strcpy(local->stu_sex, temp);
-			break;
-		case 'd':
-			strcpy(local->stu_address, temp);
-			break;
-		case 'e':
-			strcpy(local->stu_phone_num, temp);
-			break;
-		default:
-			printf("请重新输入选项哦");
-			continue;
+//将csv文件中读到的学生数据写入初始化好的指针链表（不直接调用）
+void get_data(Student* head) {
+	FILE* p_ini = fopen("basic.csv", "r");//读方式打开文件
+	Student* p = head;//记录下头指针
+	int cell = 0;//所在的列
+	char temp[5][30] = { NULL };//读取的格子内容
+	for (;;) {//不断地遍历每一行
+		static char point[2] = { "\0" };//当前指向的字符
+		cell = 0;//将所在的列置为0
+		for (;;) {//遍历一行的数据存入temp中
+			point[0] = fgetc(p_ini);//读取一个字符
+			if (point[0] == -1) {//文件结束
+				break;//跳出
+			}
+			else if (point[0] == ',') {//遇到列分隔符
+				cell++;//temp定位下标+1
+			}
+			else if (point[0] == '\n') {//遇到换行符
+
+				break;//跳出，结算本行内容
+			}
+			else {//读取到正常文本内容
+				strcat(temp[cell], point);//装到相应的罐子里
+			}
 		}
 
-		printf("修改成功！您是否还需要继续修改？（1继续，任意键退出）");
-		scanf("%c", &choice);
-		if (choice != '1')
+
+		//将temp的值赋到链表中
+		strcpy(p->stu_num, temp[0]);
+		strcpy(p->stu_name, temp[1]);
+		strcpy(p->stu_sex, temp[2]);
+		strcpy(p->stu_address, temp[3]);
+		strcpy(p->stu_phone_num, temp[4]);
+
+
+
+		//清空temp值
+		for (int i = 0; i < 5; i++) {
+			strcpy(temp[i], "");
+		}
+
+		//判断文件是否结束
+		if (point[0] = fgetc(p_ini) == -1) {
 			break;
-		else
-			printf("请键入选项进行修改（a/学号 b/姓名 c/性别 d/住址 e/联系电话 n/退出修改）：");
+		}
+		else {
+			fseek(p_ini, -1, SEEK_CUR);
+			//链表向前
+			p = p->next;
+		}
+
 	}
-	renew_data(head);//重新写入文件
-	fclose(p_ini);//关闭文件
 }
 
 
