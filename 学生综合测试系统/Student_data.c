@@ -41,14 +41,17 @@ void create_basic() {
 	Student* head;
 	head=initialize_table();
 	renew_data(head);
-	printf("创建成功！");
+	printf("创建成功！键入1继续添加(任意键退出)：");
+	if (_getch() == '1') {
+		printf("\n\n");
+		create_basic();
+	}	
 }
 
 //修改——修改学生信息模块
 void alter_basic() {
 	Student* head = initialize_table();//获取链表
 	Student* local = head;//记录下头文件，用local进行操纵
-	FILE* p_ini = fopen("basic.csv", "r");//打开文件
 	char num[15];//用户输入的学号
 	printf("请输入该学生的学号：");
 	//如果不知道学号，可通过姓名查询学号
@@ -63,7 +66,6 @@ void alter_basic() {
 		if (local == head) {//找不到
 			printf("找不到该学生！请您重新创建该学生！\n");
 			create_basic();//创建学生函数
-			getchar();
 			return;//退出
 		}
 	}
@@ -71,11 +73,25 @@ void alter_basic() {
 
 	char choice;//选项
 	char temp[30];//输入的要修改值
-	printf("请键入选项进行修改（a/学号 b/姓名 c/性别 d/住址 e/联系电话 n/退出修改）：");
+	
 	for (;;) {
-		scanf("%c", &choice);
-		if (choice == 'n')
+		printf("请键入选项进行修改（a/学号 b/姓名 c/性别 d/住址 e/联系电话 n/退出修改）：");
+		scanf("%s", &choice);
+		while (getchar() != '\n');//清除所有缓存区
+		char choices[6] = "abcden";
+		int bool=0;
+		for (int i = 0; i < 6; i++) {
+			if (choice == choices[i])
+				bool = 1;
+		}
+		if (bool == 0) {
+			printf("您输入的选项有误，请重新输入！\n");
+			continue;
+		}
+		
+		if (choice == 'n')//n选项退出
 			break;
+
 		printf("请输入修改后的值");
 		scanf("%s", temp);
 		getchar();
@@ -97,10 +113,12 @@ void alter_basic() {
 			strcpy(local->stu_phone_num, temp);
 			break;
 		default:
-			printf("请重新输入选项哦");
-			continue;
+			break;
 		}
+	
+		
 		renew_data(head);//重新写入文件
+
 		printf("修改成功！您是否还需要继续修改？（1继续，任意键退出）");
 		scanf("%c", &choice);
 		getchar();
@@ -110,32 +128,52 @@ void alter_basic() {
 			printf("请键入选项进行修改（a/学号 b/姓名 c/性别 d/住址 e/联系电话 n/退出修改）：");
 	}
 	
-	fclose(p_ini);//关闭文件
 }
  
 //删除——删除学生信息模块
 void delete_basic() {
 	Student* head = initialize_table();//获取链表
+	printf("%s", head->stu_num);
 	Student* local = head;//记录下头文件，用local进行操纵
-	FILE* p_ini = fopen("basic.csv", "r");//打开文件
 	char num[15];//用户输入的学号
-	printf("请输入该学生的学号：");
-	for (;;) {//经过此循环，定位到学生位置
-		if (num == 'n')//n选项退出
-			break;
+	printf("欢迎来到自助删除系统！自助删除，上不封顶，键入n退出。\n");
+
+	for (;;) {//一次删除学生数据的过程
+		printf("学生学号：");
 		scanf("%s", &num);//读入学号
 		getchar();//清除缓存区
-		if (strcmp(local->stu_num, num))//如果相等为0，跳出。不相等则接着遍历下一个
-			local = local->next;//往下走
-		else
+		static int jump;//用于跳出外循环
+		jump = 0;
+		if (num == 'n')//n选项退出
 			break;
-		if (local == head) {//找不到
-			printf("找不到该学生！请重新输入学号：（n退出）\n");
+		for (;;) {//此循环用于找到学生位置的前一个
+			if (strcmp(local->next->stu_num, num))//如果相等为0，跳出。不相等则接着遍历下一个
+				local = local->next;//往下走
+			else {
+				jump = 1;
+				break;
+			}
+				
+			if (local == head) {//找不到
+				break;
+			}
+		}
+		if (jump = 0) {//没找到
+			printf("找不到该学生！请重新输入\n");
 			continue;
 		}
-	}
+			
+		//删除链表中的该项数据;
+		if (local->next == local)
+			strcpy(local->stu_num, "");
+		else
+			local->next = local->next->next;
+	
 
-	fclose(p_ini);//关闭文件（有始有终）
+		//用链表更新文件
+		renew_data(local);//此时head已经不一定在删除后的链表中了
+		printf("删除成功！\n\n");
+	}
 }
 
 //获取链表——此函数用于获取当前文件内的数据并放入一个新定义的链表中，进行排序并返回该链表的头指针
@@ -168,7 +206,7 @@ Student* initialize_table() {
 
 	get_data(head);//把目前文件里的数据读入链表中
 	old = head;//记录下当前的链表头结点，下次启用该函数时释放该节点
-	head = sort_link_table(head);
+	head = sort_link_table(head);//排序
 	return head;//返回链表的头节点
 }
 
@@ -178,12 +216,14 @@ void renew_data(Student* head) {
 	FILE* p_ini = fopen("basic.csv", "w");
 	Student* local = head;
 	for (;;) {
-		fputs(strcat(local->stu_num, ","), p_ini);
-		fputs(strcat(local->stu_name, ","), p_ini);
-		fputs(strcat(local->stu_sex, ","), p_ini);
-		fputs(strcat(local->stu_address, ","), p_ini);
-		fputs(strcat(local->stu_phone_num, "\n"), p_ini);
-		local = local->next;
+		if (local->stu_num != "") {
+			fputs(strcat(local->stu_num, ","), p_ini);
+			fputs(strcat(local->stu_name, ","), p_ini);
+			fputs(strcat(local->stu_sex, ","), p_ini);
+			fputs(strcat(local->stu_address, ","), p_ini);
+			fputs(strcat(local->stu_phone_num, "\n"), p_ini);
+			local = local->next;
+		}
 		if (local == head)
 			break;
 	}

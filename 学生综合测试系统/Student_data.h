@@ -7,6 +7,7 @@ Student* sort_link_table(Student* head);
 void browse();
 void alter_basic();
 void renew_data(Student* head);
+void delete_basic();
 #endif // !__STUDENT_DATAs_H__
 
 
