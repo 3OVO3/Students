@@ -1,7 +1,6 @@
 #ifndef __STUDENT_DATA_H__
 #define __STUDENT_DATA_H__
 
-#include <conio.h>//包含_getch()函数的头文件，仅在本函数集使用
 
 //功能函数【5】
 void create_basic();

@@ -11,7 +11,7 @@ typedef struct Student {
 	char stu_address[30];//家庭住址
 	char stu_phone_num[30];//联系电话
 	struct Student* next;//用于链表结点的串连
-	struct Course* course_data;//纵向串联学生成绩的链表
+	struct Course* course;//用于纵向连接Course表
 }Student;
 
 
@@ -34,6 +34,8 @@ typedef struct Course {
 #include <stdlib.h>
 #include <string.h>
 #include <windows.h> 
+#include <conio.h>
 #include "UI.h"
 #include "Student_data.h"
+#include "Student_grade.h"
 #endif

@@ -24,6 +24,9 @@
     <ClCompile Include="Student_data.c">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Student_grade.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.h">
@@ -33,6 +36,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Student_data.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Student_grade.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
