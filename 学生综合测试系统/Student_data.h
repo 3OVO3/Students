@@ -15,7 +15,7 @@ void renew_data(Student* head);
 
 //×Óº¯Êı¡¾4¡¿
 Student* sort_link_table(Student* head);
-void get_data(Student* head);
+void get_all_info(Student* head);
 int browe_center(int col_width, int len);
 void table_head_input(Student* head);
 
