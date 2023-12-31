@@ -90,6 +90,7 @@ void alter_grade() {
 	int temp;//输入的要修改值
 
 	for (;;) {
+		grade_table_head_input(local);
 		printf("请键入选项进行修改（a/语文成绩 b/数学成绩 c/英语成绩 d/互评分数 e/思想品德分数 f/教师评价分数 n/退出修改）：");
 		scanf("%c", &choice);
 		while (getchar() != '\n');//清除所有缓存区
@@ -153,7 +154,8 @@ void alter_grade() {
 		choice = _getch();
 		if (choice != '1')
 			break;
-		printf("\n\n\n");
+		else
+			system("cls");
 	}
 
 }
@@ -191,22 +193,46 @@ void delete_grade() {
 			continue;
 		}
 
-		//将链表中的该学生的成绩清零
-		local->next->course.mark_Chinese = 0;
-		local->next->course.mark_math = 0;
-		local->next->course.mark_English = 0;
-		local->next->course.mark_avg_main_subject = 0;
-		local->next->course.rank_main_subject = 0;
-		local->next->course.mark_peer = 0;
-		local->next->course.mark_morality = 0;
-		local->next->course.mark_avg_Tch = 0;
-		local->next->course.mark_comprehensive = 0;
-		local->next->course.rank_comprehensive = 0;
+		//显示该学生信息
+		grade_table_head_input(local->next);
+
+		printf("请确认是否删除？ y/n ");
+		char temp;
+		scanf("%c", &temp);
+		while (getchar() != '\n');//清除所有缓存区
+		while (1) {
+			if (temp == 'y' || temp == 'Y') {
+				//将链表中的该学生的成绩清零
+				local->next->course.mark_Chinese = 0;
+				local->next->course.mark_math = 0;
+				local->next->course.mark_English = 0;
+				local->next->course.mark_avg_main_subject = 0;
+				local->next->course.rank_main_subject = 0;
+				local->next->course.mark_peer = 0;
+				local->next->course.mark_morality = 0;
+				local->next->course.mark_avg_Tch = 0;
+				local->next->course.mark_comprehensive = 0;
+				local->next->course.rank_comprehensive = 0;
+				//用链表更新文件
+				renew_grade(local);//此时head已经不一定在删除后的链表中了
+				printf("删除成功！\n\n");
+				break;
+			}
+			else if (temp == 'n' || temp == 'N') {
+				printf("没有对%s号学生进行删除操作！\n\n", local->next->stu_num);
+				break;
+			}
+			else {
+				printf("请重新输入 y/n ！ ");
+				scanf("%c", &temp);
+				while (getchar() != '\n');//清除所有缓存区
+			}
+		}
+
+		
 
 
-		//用链表更新文件
-		renew_grade(local);//此时head已经不一定在删除后的链表中了
-		printf("删除成功！\n\n");
+		
 	}
 }
 
@@ -549,7 +575,7 @@ void renew_grade(Student* head) {
 void grade_table_head_input(Student* head) {
 	Student* local = head;//保存头节点
 	int col_width = 0;//列宽
-	for (int i = 1; i < 3; i++) {//控制显示几行，具体行数由链表的节点数来控制
+	for (int i = 1; i < 3; i++) {
 		for (int j = 1; j < 12; j++) {//显示11列
 
 			//显示学号和姓名
