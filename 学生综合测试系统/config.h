@@ -12,7 +12,7 @@ typedef struct Course {
 	int rank_main_subject;//主科排名
 	int mark_peer;//互评分数
 	int mark_morality;//思想品德分数
-	int mark_avg_Tch;//平均教师评价分数
+	int mark_avg_Tch;//教师评价分数
 	float mark_comprehensive;//综测分数
 	int rank_comprehensive;//综测名次
 }Course;

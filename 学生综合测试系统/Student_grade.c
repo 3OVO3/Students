@@ -3,6 +3,15 @@
 //功能函数列表【5】
 //创建——写学生信息的函数
 void create_grade() {
+
+	FILE* p_ini = fopen("grade.csv", "r");
+	if (p_ini == 0) {
+		p_ini = fopen("grade.csv", "w");
+	}
+	else {
+		fclose(p_ini);
+	}
+
 	Student* head = initialize_table();
 	Student* new = head;
 	for (;;) {
@@ -228,10 +237,6 @@ void delete_grade() {
 				while (getchar() != '\n');//清除所有缓存区
 			}
 		}
-
-		
-
-
 		
 	}
 }
