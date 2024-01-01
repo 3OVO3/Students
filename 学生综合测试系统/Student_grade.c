@@ -1,7 +1,7 @@
 #include "config.h"
 
 //功能函数列表【5】
-//创建——写学生信息的函数
+//创建——写学生成绩的函数
 void create_grade() {
 
 	FILE* p_ini = fopen("grade.csv", "r");
@@ -76,7 +76,7 @@ void create_grade() {
 	system("pause");
 }
 
-//修改——修改学生信息模块
+//修改——修改学生成绩模块
 void alter_grade() {
 	Student* head = initialize_table();//获取链表
 	Student* local = head;//记录下头文件，用local进行操纵
@@ -169,7 +169,7 @@ void alter_grade() {
 
 }
 
-//删除——删除学生信息模块
+//删除——删除学生成绩模块
 void delete_grade() {
 	char num[15];//用户输入的学号
 	printf("欢迎来到自助删除系统！自助删除，上不封顶，键入n退出。\n");
@@ -241,7 +241,7 @@ void delete_grade() {
 	}
 }
 
-//查询——查询学生信息模块
+//查询——查询学生成绩模块
 void select_grade() {
 	//这里寻找学号所在节点与修改函数同理
 	Student* head = initialize_table();//获取链表
@@ -283,7 +283,7 @@ void select_grade() {
 
 }
 
-//浏览学生信息
+//浏览学生成绩
 void browse_grade() {
 	Student* head = initialize_table();
 	Student* local = head;//保存头节点
